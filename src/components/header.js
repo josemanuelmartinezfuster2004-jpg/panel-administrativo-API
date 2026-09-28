@@ -1,7 +1,7 @@
 class Header extends HTMLElement {
   constructor() {
     super()
-    this.attachShadow({ mode: 'open' })
+    this.shadow = this.attachShadow({ mode: 'open' })
   }
 
   connectedCallback() {
@@ -9,7 +9,7 @@ class Header extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot.innerHTML = /*html*/`
+    this.shadow.innerHTML = /*html*/`
       <style>
         *{
           box-sizing: border-box;

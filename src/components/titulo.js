@@ -1,7 +1,7 @@
 class Titulo extends HTMLElement {
   constructor() {
     super()
-    this.attachShadow({ mode: 'open' })
+    this.shadow = this.attachShadow({ mode: 'open' })
   }
 
   connectedCallback() {
@@ -9,13 +9,9 @@ class Titulo extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot.innerHTML = /*html*/`
+    this.shadow.innerHTML = /*html*/`
       <style>
-        .nombre-web{
-          text-align:center;
-        }
-
-        .nombre-web p{
+        h1{
           color:hsl(0,0%,100%);
           font-size:1.2rem;
           font-weight:bold;
@@ -23,8 +19,8 @@ class Titulo extends HTMLElement {
         }
       </style>
 
-      <div class="nombre-web">
-        <p>Administrador web - Usuario</p>
+      <div class="title">
+        <h1>Administrador web - Usuario</h1>
       </div>
     `
   }

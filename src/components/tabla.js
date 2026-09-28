@@ -1,22 +1,44 @@
+export default (() => {
+
 class Tabla extends HTMLElement {
   constructor() {
     super()
-    this.attachShadow({ mode: 'open' })
+    this.shadow = this.attachShadow({ mode: 'open' })
+    this.data = []
+    this.label = JSON.parse(this.getAttribute('label'))
   }
 
   connectedCallback() {
+    this.loadData()
     this.render()
   }
 
+  loadData() {
+    this.data = [
+      {
+        nombre: 'jose',
+        email: 'josemanuelmarinezfuster2004@gmail.com',
+        createAt: '2026-09-22',
+        updateAt: '2026-09-23',
+      },
+      {
+        nombre: 'maria',
+        email: 'mariamanuelmarinezfuster2004@gmail.com',
+        createAt: '2026-09-22',
+        updateAt: '2026-09-23',
+      },
+    ]
+  }
+
   render() {
-    this.shadowRoot.innerHTML = /*html*/`
+    this.shadow.innerHTML = /*html*/`
       <style>
-      *{
+        *{
           box-sizing:border-box;
           margin:0;
           padding:0;
         }
-        
+
         .caja-registros{
           display:flex;
           flex-direction:column;
@@ -37,6 +59,7 @@ class Tabla extends HTMLElement {
           display:flex;
           align-items:center;
           justify-content:center;
+          cursor:pointer;
         }
 
         .filtro svg{
@@ -56,9 +79,22 @@ class Tabla extends HTMLElement {
           margin-left:auto;
         }
 
-        .paginas p{
-          color:hsl(0,0%,100%);
-          font-weight:bold;
+       p{
+          color:hsla(0, 0%, 100%, 1.00);
+        }
+
+        .registro p {
+          color:hsla(0, 0%, 3%, 1.00);
+    
+        }
+
+        .registro p span {
+          color:hsla(0, 0%, 3%, 1.00);
+          font-weight: 700;
+        }
+
+        .registro p span::after {
+          content: ": "
         }
 
         .atras,
@@ -69,8 +105,8 @@ class Tabla extends HTMLElement {
         .registros{
           display:flex;
           flex-direction:column;
-          margin-top:1rem;
-          background-color:hsl(0,0%,100%);
+          gap: 1rem;
+          margin-top: 1rem;
         }
 
         .registro{
@@ -112,15 +148,32 @@ class Tabla extends HTMLElement {
           </div>
         </div>
 
-        <div class="registros">
-          <div class="registro">
-            <p><strong>Nombre:</strong> jose</p>
-            <p><strong>Email:</strong> josemanuelmarinezfuster2004@gmail.com</p>
-          </div>
-        </div>
+        <div class="registros"></div>
       </div>
     `
+
+    const registrosContainer = this.shadow.querySelector('.registros')
+    const data = this.data
+    
+      data.forEach(registro => {
+      const registroContainer = document.createElement('div')
+      registroContainer.classList.add('registro')
+      registrosContainer.appendChild(registroContainer)
+      
+      Object.entries(registro).forEach(([key, value]) => {
+        const nombre = document.createElement('p')
+        nombre.textContent = value
+        registroContainer.appendChild(nombre)
+
+        const span = document.createElement('span')
+        nombre.prepend(span)
+        span.textContent = this.label[key]
+      })
+
+    })
   }
 }
 
 customElements.define('tabla-component', Tabla);
+
+})()

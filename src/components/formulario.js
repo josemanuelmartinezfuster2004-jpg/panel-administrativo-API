@@ -1,7 +1,7 @@
 class Formulario extends HTMLElement {
   constructor() {
     super()
-    this.attachShadow({ mode: 'open' })
+    this.shadow = this.attachShadow({ mode: 'open' })
   }
 
   connectedCallback() {
@@ -9,9 +9,9 @@ class Formulario extends HTMLElement {
   }
 
   render() {
-    this.shadowRoot.innerHTML = /*html*/`
+    this.shadow.innerHTML = /*html*/`
       <style>
-      *{
+        *{
           box-sizing:border-box;
           margin:0;
           padding:0;
@@ -24,23 +24,32 @@ class Formulario extends HTMLElement {
 
         .opciones-form{
           display:flex;
-          align-items:stretch;
+          align-items: stretch;
           width:100%;
           height:3rem;
           border-bottom:.15rem solid hsl(39,100%,50%);
         }
 
-        .titulo-apartado{
+        .tabs{
+          display: flex;
+        }
+
+        .tab{
+          cursor: pointer;
           display:flex;
           align-items:center;
           justify-content:center;
           padding:0 1rem;
-          background-color:hsl(39,100%,50%);
+          background-color:hsl(39,100%,50%, 0.5);
           width:auto;
           height:3rem;
         }
 
-        .titulo-apartado p{
+        .tab.active{
+          background-color:hsl(39,100%,50%);
+        }
+
+        .tab span{
           color:hsl(0,0%,100%);
           font-weight:bold;
           text-transform:capitalize;
@@ -78,12 +87,16 @@ class Formulario extends HTMLElement {
           padding:0 1rem;
         }
 
-        form{
-          padding:1rem 0;
-          display:flex;
-          gap:1rem;
+        .tab-content{
+          display: none;
+          padding: 1rem 0;
           width:100%;
           min-height:7rem;
+        }
+
+        .tab-content.active{
+          display: flex;
+          gap:1rem;
         }
 
         .campo{
@@ -108,8 +121,13 @@ class Formulario extends HTMLElement {
 
       <div class="caja-form">
         <div class="opciones-form">
-          <div class="titulo-apartado">
-            <p>General</p>
+          <div class="tabs">
+            <div class="tab active" data-tab="general">
+              <span>General</span>
+            </div>
+             <div class="tab" data-tab="images">
+              <span>Imagenes</span>
+            </div>
           </div>
 
           <div class="caja-opciones-form">
@@ -130,21 +148,39 @@ class Formulario extends HTMLElement {
 
         <div class="formulario">
           <form>
-            <div class="campo">
-              <p>Nombre</p>
-              <input type="text">
-            </div>
+            <div class="tab-content active"  data-tab="general">
+              <div class="campo">
+                <p>Nombre</p>
+                <input type="text">
+              </div>
 
-            <div class="campo">
-              <p>Email</p>
-              <input type="email">
+              <div class="campo">
+                <p>Email</p>
+                <input type="email">
+              </div>
+            </div>
+            <div class="tab-content" data-tab="images">
+              <div class="campo">
+                <p>Nombre</p>
+                <input type="text">
+              </div>
             </div>
           </form>
         </div>
       </div>
     `
 
+    this.shadow.querySelector('.caja-form').addEventListener('click', event => {
+      if (event.target.closest('.tab')) {
+        const tab = event.target.closest('.tab')
 
+        this.shadow.querySelector('.tab.active').classList.remove('active')
+        tab.classList.add('active')
+
+        this.shadow.querySelector('.tab-content.active').classList.remove('active')
+        this.shadow.querySelector(`.tab-content[data-tab="${tab.dataset.tab}"]`).classList.add('active')
+      }
+    })
   }
 }
 
