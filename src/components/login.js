@@ -11,6 +11,7 @@ export default (() => {
       this.render()
     }
 
+    
     render() {
       this.shadow.innerHTML = /*html*/`
         <style>
