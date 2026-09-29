@@ -85,6 +85,7 @@ export default (() => {
     }
   }
 
+  
   customElements.define('login-component', Login)
 
 })()
