@@ -11,7 +11,6 @@ export default (() => {
       this.render()
     }
 
-    
     render() {
       this.shadow.innerHTML = /*html*/`
         <style>
@@ -23,14 +22,14 @@ export default (() => {
           }
 
           h1 {
-            color: hsl(39,100%,50%);
+            color: hsl(39, 100%, 50%);
             font-size: 1.5rem;
             text-align: center;
             padding: 0.5rem;
           }
 
           label {
-            color: hsl(39,100%,50%);
+            color: hsl(39, 100%, 50%);
             font-size: 0.8rem;
           }
 
@@ -43,13 +42,13 @@ export default (() => {
             height: 2rem;
             border: none;
             border-radius: 0.3rem;
-            background-color: hsl(39,100%,50%);
-            color: hsl(0,0%,0%);
+            background-color: hsl(39, 100%, 50%);
+            color: hsl(0, 0%, 0%);
             cursor: pointer;
           }
 
           a {
-            color: hsl(39,100%,50%);
+            color: hsl(39, 100%, 50%);
             font-size: 0.8rem;
             text-align: center;
           }
@@ -69,9 +68,24 @@ export default (() => {
           <a href="#">Olvidé mi contraseña</a>
         </form>
       `
+
+      const formulario = this.shadow.querySelector('form')
+      const email = this.shadow.querySelector('#email')
+      const password = this.shadow.querySelector('#password')
+
+      formulario.addEventListener('submit', (event) => {
+        event.preventDefault()
+
+        if (email.value === '' || password.value === '') {
+          alert('Error en el formulario, por favor rellene el formulario correctamente')
+        } else {
+          alert('Formulario rellenado correctamente')
+        }
+      })
     }
   }
 
   customElements.define('login-component', Login)
 
 })()
+
